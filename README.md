@@ -69,9 +69,7 @@
 
 ### Platforms Tested
 
-- Kali Linux 2022
-- macOS Big Sur / M1
-- Termux (android)
+- Kali Linux 2025
 - Personal host (direct admin and cPanel)
   <br>
 
