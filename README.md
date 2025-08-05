@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/ultrasecurity/Storm-Breaker"><img src=".imgs/1demo.png" alt="StormBreaker"></a>
+  <a href="https://github.com/LALUARIFTA/StormbreakerV2"><img src=".imgs/1demo.jpg" alt="StormBreakerV2"></a>
 
 </h1>
 
@@ -22,7 +22,7 @@
 
 </p>
 
-![demo](.imgs/screen1.jpeg)
+![demo](.imgs/screen1.png)
 
 ### Features:
 
@@ -78,7 +78,7 @@
 ### Installation On Kali Linux
 
 ```
-git clone https://github.com/ultrasecurity/Storm-Breaker
+git clone https://github.com/LALUARIFTA/StormbreakerV2
 cd Storm-Breaker
 sudo bash install.sh
 sudo python3 -m pip install -r requirements.txt
