@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://github.com/LALUARIFTA/StormbreakerV2"><img src=".imgs/1demo.png" alt="StormBreakerV2"></a>
+  <a href="https://github.com/LALUARIFTA/StormbreakerV2"><img src=".imgs/1demo.jpg" alt="StormBreakerV2"></a>
 
 </h1>
 
@@ -22,7 +22,7 @@
 
 </p>
 
-![demo](.imgs/screen1.jpg)
+![demo](.imgs/screen1.png)
 
 ### Features:
 
